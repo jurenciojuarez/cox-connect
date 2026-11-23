@@ -53,3 +53,16 @@
  const checkboxes=[...document.querySelectorAll('[data-reset-check]')];
  if(checkboxes.length){const cached=load(CHECKS)||{};const update=()=>{const next={};checkboxes.forEach(e=>next[e.dataset.resetCheck]=e.checked);save(CHECKS,next);document.getElementById('checklist-progress').textContent=checkboxes.filter(e=>e.checked).length+' of '+checkboxes.length+' steps complete';};checkboxes.forEach(e=>{e.checked=Boolean(cached[e.dataset.resetCheck]);e.addEventListener('change',update);});update();}
 })();
+
+// The same functional Lab 3 Chatling bot is available on both pages.
+(()=>{
+ const launcher=document.createElement('button');launcher.type='button';launcher.className='chat-launcher';launcher.id='chat-launcher';launcher.setAttribute('aria-controls','lab3-chat-panel');launcher.setAttribute('aria-expanded','false');launcher.textContent='Chat with the Lab 3 bot';
+ const panel=document.createElement('section');panel.id='lab3-chat-panel';panel.className='chat-panel';panel.hidden=true;panel.setAttribute('role','region');panel.setAttribute('aria-label','Harbor House guest assistant');
+ const header=document.createElement('div');header.className='chat-heading';const intro=document.createElement('div');const title=document.createElement('h2');title.textContent='Harbor House guest assistant';const note=document.createElement('p');note.textContent='Lab 3 chatbot demo. Ask about hotel check-in, parking or breakfast.';intro.append(title,note);
+ const close=document.createElement('button');close.type='button';close.className='chat-close';close.textContent='×';close.setAttribute('aria-label','Close chatbot');header.append(intro,close);panel.append(header);
+ const frame=document.createElement('iframe');frame.title='Harbor House Chatling chatbot';frame.setAttribute('allow','clipboard-write');
+ const fallback=document.createElement('p');fallback.className='chat-fallback';const link=document.createElement('a');link.href='https://share.chatling.ai/s/n6Lt9vg9U22vcWg';link.target='_blank';link.rel='noopener';link.textContent='Open chatbot in a separate tab';fallback.append(link);panel.append(frame,fallback);document.body.append(launcher,panel);
+ function open(){if(!frame.src)frame.src=link.href;panel.hidden=false;launcher.setAttribute('aria-expanded','true');close.focus();}
+ function hide(){panel.hidden=true;launcher.setAttribute('aria-expanded','false');launcher.focus();}
+ launcher.addEventListener('click',()=>panel.hidden?open():hide());close.addEventListener('click',hide);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden)hide();});
+})();
